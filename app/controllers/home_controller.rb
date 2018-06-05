@@ -18,9 +18,27 @@ require 'open-uri'
     #   puts link.content
     # end
     models = []
+    # <div class="tcom-model-sweep-info">
+    # doc.css("a[class='tcom-model-sweep-title']")
+    # model string
+    # starting_price integer
+    # brand string
+    # miles_galon integer
+    # km_liter
       if brand == 'toyota'
-        doc.css("a[class='tcom-model-sweep-title']").each do |elem|
+        doc.css("div[class='tcom-model-sweep-info']").each do |elem|
           models << elem.content
+          unless elem.content.index('$').nil?
+            data = elem.content.split(' ')
+            model = elem.content.split('$').first[0..-2].squish
+            starting_price = data[2]
+            miles_gallon = data[3]
+            km_liter = nil
+            # puts "WE ARE PRINTING A MODEL"
+            puts model
+            Car.create(model: model, starting_price: starting_price, miles_gallon: miles_gallon )
+            # models << model
+          end
         end
       end
       if brand == 'suzuki'
