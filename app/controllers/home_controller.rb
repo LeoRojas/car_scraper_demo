@@ -36,7 +36,14 @@ require 'open-uri'
             km_liter = nil
             # puts "WE ARE PRINTING A MODEL"
             puts model
-            Car.create(model: model, starting_price: starting_price, miles_gallon: miles_gallon )
+            car = Car.find_by(model: model)
+            if car.nil?
+              Car.create(model: model, starting_price: starting_price, miles_gallon: miles_gallon, brand: brand)
+              p "Car created"
+            else
+              car.update(starting_price: starting_price, miles_gallon: miles_gallon, brand: brand)
+              p "Car updated"
+            end
             # models << model
           end
         end
